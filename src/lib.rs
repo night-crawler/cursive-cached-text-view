@@ -507,7 +507,7 @@ mod tests {
     #[test]
     fn sanity() {
         let text_view = CachedTextView::new("", 5);
-        assert_eq!(text_view.get_content().data.spans.len(), 1);
+        assert_eq!(text_view.get_content().data.spans().len(), 1);
     }
 
     #[test]
