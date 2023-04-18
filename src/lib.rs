@@ -183,7 +183,6 @@ impl TextContentInner {
 /// ```rust
 /// use cursive::Cursive;
 /// use cursive_cached_text_view::CachedTextView;
-/// use cursive_core::Cursive;
 /// let mut siv = Cursive::new();
 ///
 /// siv.add_layer(CachedTextView::new("Hello world!", 5));
@@ -246,6 +245,7 @@ impl CachedTextView {
 
     /// Sets the style for the content.
     pub fn set_style<S: Into<StyleType>>(&mut self, style: S) {
+        self.cache.clear();
         self.style = style.into();
     }
 
@@ -269,6 +269,7 @@ impl CachedTextView {
     ///
     /// If `true` (the default), text will wrap long lines when needed.
     pub fn set_content_wrap(&mut self, wrap: bool) {
+        self.cache.clear();
         self.wrap = wrap;
     }
 
@@ -319,6 +320,7 @@ impl CachedTextView {
         where
             S: Into<StyledString>,
     {
+        self.cache.clear();
         self.content.set_content(content);
     }
 
@@ -327,6 +329,7 @@ impl CachedTextView {
         where
             S: Into<StyledString>,
     {
+        self.cache.clear();
         self.content.append(content);
     }
 
@@ -478,6 +481,10 @@ impl<K, V> TinyCache<K, V> {
         }
     }
 
+    fn clear(&mut self) {
+        self.data.clear();
+    }
+
     fn last(&self) -> Option<&V> {
         self.data.last().map(|(_, _, v)| v)
     }
@@ -500,6 +507,7 @@ impl<K, V> TinyCache<K, V> {
 
 #[cfg(test)]
 mod tests {
+    use cursive::theme::Style;
     use cursive::Vec2;
 
     use super::*;
@@ -530,5 +538,20 @@ mod tests {
         assert_eq!(text_view.cache.len(), 3);
 
         assert_eq!(text_view.cache.keys(), [(&0, 1), (&2, 0), (&3, 0)]);
+
+        text_view.set_content("");
+        assert_eq!(text_view.cache.len(), 0);
+        text_view.compute_rows(Vec2::new(0, 0));
+
+        text_view.append("sample");
+        assert_eq!(text_view.cache.len(), 0);
+        text_view.compute_rows(Vec2::new(0, 0));
+
+        text_view.set_content_wrap(false);
+        assert_eq!(text_view.cache.len(), 0);
+        text_view.compute_rows(Vec2::new(0, 0));
+
+        text_view.set_style(Style::view());
+        assert_eq!(text_view.cache.len(), 0);
     }
 }

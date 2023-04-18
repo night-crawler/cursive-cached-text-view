@@ -1,6 +1,6 @@
 [package]
 name = "cursive-cached-text-view"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "An implementation of Cursive's TextView that caches the rows"
 homepage = "https://github.com/night-crawler/cursive-cached-text-view"
