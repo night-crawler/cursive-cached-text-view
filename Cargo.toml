@@ -1,0 +1,17 @@
+[package]
+name = "cursive-cached-text-view"
+version = "0.1.0"
+edition = "2021"
+description = "An implementation of Cursive's TextView that caches the rows"
+homepage = "https://github.com/night-crawler/cursive-cached-text-view"
+repository = "https://github.com/night-crawler/cursive-cached-text-view"
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
+owning_ref = "0.4.1"
+unicode-width = "0.1.10"
+lru = "0.10.0"
+
+[dependencies.cursive]
+version = "0.20"
